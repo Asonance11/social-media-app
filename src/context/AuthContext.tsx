@@ -49,11 +49,12 @@ export const AuthProvider = ({ children }: Props) => {
 		signup,
 		signin,
 		logout,
+		user,
 	};
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export function useAuth() {
+export function UserAuth() {
 	return useContext(AuthContext);
 }
