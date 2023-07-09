@@ -8,13 +8,13 @@ const Signup = () => {
 
 	const navigate = useNavigate();
 
-	const { signup } = UserAuth();
+	const { signUp } = UserAuth();
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		try {
-			await signup(email, password);
+			await signUp(email, password);
 			navigate('/');
 		} catch (error) {
 			console.error(error);
