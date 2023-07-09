@@ -1,5 +1,7 @@
 import {
+	Auth,
 	User,
+	UserCredential,
 	createUserWithEmailAndPassword,
 	onAuthStateChanged,
 	signInWithEmailAndPassword,
@@ -18,16 +20,24 @@ interface Props {
 	children?: ReactNode;
 }
 
-const AuthContext = createContext({});
+export interface AuthContextModel {
+	auth: Auth;
+	user: User | null;
+	signIn: (email: string, password: string) => Promise<UserCredential>;
+	signUp: (email: string, password: string) => Promise<UserCredential>;
+}
 
+export const AuthContext = createContext<AuthContextModel>(
+	{} as AuthContextModel
+);
 export const AuthProvider = ({ children }: Props) => {
 	const [user, setUser] = useState<User | null>(null);
 
-	function signup(email: string, password: string) {
+	function signUp(email: string, password: string): Promise<UserCredential> {
 		return createUserWithEmailAndPassword(auth, email, password);
 	}
 
-	function signin(email: string, password: string) {
+	function signIn(email: string, password: string): Promise<UserCredential> {
 		return signInWithEmailAndPassword(auth, email, password);
 	}
 
@@ -46,15 +56,16 @@ export const AuthProvider = ({ children }: Props) => {
 	}, []);
 
 	const value = {
-		signup,
-		signin,
+		signUp,
+		signIn,
 		logout,
 		user,
+		auth,
 	};
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export default function UserAuth() {
+export default function UserAuth(): AuthContextModel {
 	return useContext(AuthContext);
 }
