@@ -14,11 +14,11 @@ import {
 } from 'react';
 import { auth } from '../config/firebase';
 
-const AuthContext = createContext({});
-
 interface Props {
 	children?: ReactNode;
 }
+
+const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }: Props) => {
 	const [user, setUser] = useState<User | null>(null);
@@ -55,6 +55,6 @@ export const AuthProvider = ({ children }: Props) => {
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export function UserAuth() {
+export default function UserAuth() {
 	return useContext(AuthContext);
 }
