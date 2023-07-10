@@ -1,3 +1,4 @@
+import { updateProfile } from 'firebase/auth';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import UserAuth from '../context/AuthContext';
@@ -15,7 +16,10 @@ const Signup = () => {
 		e.preventDefault();
 
 		try {
-			await signUp(email, password);
+			const thisUser: any = await signUp(email, password);
+			await updateProfile(thisUser.user, {
+				displayName: userName,
+			});
 			navigate('/');
 		} catch (error) {
 			console.error(error);
