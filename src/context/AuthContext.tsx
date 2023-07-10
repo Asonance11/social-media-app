@@ -25,6 +25,7 @@ export interface AuthContextModel {
 	user: User | null;
 	signIn: (email: string, password: string) => Promise<UserCredential>;
 	signUp: (email: string, password: string) => Promise<UserCredential>;
+	logout: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextModel>(
@@ -41,7 +42,7 @@ export const AuthProvider = ({ children }: Props) => {
 		return signInWithEmailAndPassword(auth, email, password);
 	}
 
-	function logout() {
+	function logout(): Promise<void> {
 		return signOut(auth);
 	}
 
