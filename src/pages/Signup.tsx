@@ -5,6 +5,7 @@ import UserAuth from '../context/AuthContext';
 const Signup = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [userName, setUserName] = useState('');
 
 	const navigate = useNavigate();
 
@@ -42,6 +43,19 @@ const Signup = () => {
 								setEmail(e.target.value);
 							}}
 							value={email}
+							id="user-email"
+						/>
+						<input
+							type="text"
+							name="username"
+							id="username"
+							placeholder="Username"
+							required
+							className="p-2 border-[#333333] rounded w-full outline-none"
+							onChange={(e) => {
+								setUserName(e.target.value);
+							}}
+							value={userName}
 						/>
 						<input
 							type="password"
@@ -53,6 +67,7 @@ const Signup = () => {
 								setPassword(e.target.value);
 							}}
 							value={password}
+							id="password"
 						/>
 						<button type="submit" className="bg-green-500 rounded p-2">
 							Signup
