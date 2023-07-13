@@ -16,7 +16,7 @@ const Navbar = () => {
 	};
 
 	return (
-		<nav className="px-[5%] py-4 flex justify-between items-center font-roboto bg-lotion text-eerieBlack md:px-8">
+		<nav className="px-[5%] fixed w-full py-4 flex justify-between items-center font-roboto bg-lotion text-eerieBlack md:px-8">
 			<Link to="/">
 				<h1 className="text-3xl text-darkBlue">Logo</h1>
 			</Link>
