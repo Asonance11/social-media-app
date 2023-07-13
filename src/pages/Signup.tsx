@@ -21,7 +21,7 @@ const Signup = () => {
 			await updateProfile(thisUser.user, {
 				displayName: userName,
 			});
-			toast.success('User signed in succesfully');
+			toast.success('Account created succesfully');
 			navigate('/');
 		} catch (error) {
 			console.error(error);
