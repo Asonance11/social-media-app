@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Toaster } from 'sonner';
 import Navbar from './components/Navbar';
 import { AuthProvider } from './context/AuthContext';
 import Home from './pages/Home';
@@ -10,6 +11,7 @@ function App() {
 		<>
 			<AuthProvider>
 				<BrowserRouter>
+					<Toaster richColors />
 					<Navbar />
 					<Routes>
 						<Route path="/" element={<Home />} />
