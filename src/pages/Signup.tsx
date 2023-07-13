@@ -32,13 +32,16 @@ const Signup = () => {
 	return (
 		<>
 			<div className="w-full h-screen bg-white flex items-center justify-center">
-				<div className="bg-gray-700 rounded min-w-[300px]">
+				<div className="bg-gainsboro font rounded min-w-[300px] p-4 shadow-xl shadow-[rgba(0,0,0,.2)]">
+					<h2 className="text-center text-eerieBlack text-xl font-bold">
+						REGISTER
+					</h2>
 					<form
 						onSubmit={(e) => {
 							handleSubmit(e);
 						}}
 						action=""
-						className="flex flex-col gap-2 p-4"
+						className="flex flex-col gap-4  mt-4"
 					>
 						<input
 							type="email"
@@ -76,15 +79,23 @@ const Signup = () => {
 							value={password}
 							id="password"
 						/>
-						<button type="submit" className="bg-green-500 rounded p-2">
+						<button
+							type="submit"
+							className="bg-darkBlue text-white rounded p-2 hover:opacity-90"
+						>
 							Signup
 						</button>
 					</form>
 					<div>
-						<p className="text-center">
-							<span>Already created an account?</span>
+						<p className="text-center mt-4">
+							<span className="text-eerieBlack">
+								Already created an account?
+							</span>
 							{''}
-							<Link to="/login" className="hover:underline">
+							<Link
+								to="/login"
+								className="text-darkBlue opacity-80 hover:underline"
+							>
 								{' '}
 								Sign in
 							</Link>
