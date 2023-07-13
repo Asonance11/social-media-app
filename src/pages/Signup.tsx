@@ -1,6 +1,7 @@
 import { updateProfile } from 'firebase/auth';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import UserAuth from '../context/AuthContext';
 
 const Signup = () => {
@@ -20,9 +21,11 @@ const Signup = () => {
 			await updateProfile(thisUser.user, {
 				displayName: userName,
 			});
+			toast.success('User signed in succesfully');
 			navigate('/');
 		} catch (error) {
 			console.error(error);
+			toast.error(`${error}`);
 		}
 	};
 

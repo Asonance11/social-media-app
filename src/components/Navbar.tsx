@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
 import UserAuth from '../context/AuthContext';
 
 const Navbar = () => {
@@ -7,8 +8,10 @@ const Navbar = () => {
 	const handleLogout = async () => {
 		try {
 			await logout();
+			toast.success('Sucessfully logged out');
 		} catch (error) {
 			console.error(error);
+			toast.error(`${error}`);
 		}
 	};
 
