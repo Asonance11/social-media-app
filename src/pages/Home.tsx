@@ -1,5 +1,11 @@
+import Posts from '../components/Posts';
+
 const Home = () => {
-	return <div>Home</div>;
+	return (
+		<section>
+			<Posts />
+		</section>
+	);
 };
 
 export default Home;
