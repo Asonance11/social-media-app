@@ -1,5 +1,54 @@
+import { collection, getDocs } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { db } from '../config/firebase';
+import Post from './Post';
+
+interface PostType {
+	username: string;
+	caption: string;
+	imageUrl: string;
+	id: string;
+}
+
 const Posts = () => {
-	return <div>Posts</div>;
+	const [posts, setPosts] = useState<PostType[]>([]);
+
+	const postCollectionRef = collection(db, 'posts');
+
+	const getPosts = async () => {
+		try {
+			const data = await getDocs(postCollectionRef);
+			const filteredData: PostType[] = data.docs.map(
+				(doc) =>
+					({
+						...doc.data(),
+						id: doc.id,
+					} as PostType)
+			);
+			console.log(filteredData);
+			setPosts(filteredData);
+		} catch (error) {
+			console.error(error);
+			toast.error(`${error}`);
+		}
+	};
+
+	useEffect(() => {
+		getPosts();
+	}, []);
+
+	return (
+		<section>
+			{posts.map((post) => (
+				<Post
+					username={post.username}
+					caption={post.caption}
+					imageUrl={post.imageUrl}
+				/>
+			))}
+		</section>
+	);
 };
 
 export default Posts;
