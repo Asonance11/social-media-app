@@ -39,7 +39,7 @@ const Posts = () => {
 	}, []);
 
 	return (
-		<section>
+		<section className="container mx-auto p-4">
 			{posts.map((post) => (
 				<Post
 					username={post.username}
