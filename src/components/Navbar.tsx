@@ -16,10 +16,7 @@ const Navbar = () => {
 	};
 
 	return (
-		<nav className="px-[5%] fixed w-full py-4 flex justify-between items-center font-roboto bg-lotion text-eerieBlack md:px-8">
-			<Link to="/">
-				<h1 className="text-3xl text-darkBlue">Logo</h1>
-			</Link>
+		<nav className="px-[5%] fixed w-full py-4 flex justify-end items-center font-roboto bg-white text-eerieBlack md:px-8">
 			{user?.email ? (
 				<div className="flex items-center gap-4">
 					<p className="text-base font-medium text-darkBlue capitalize">
