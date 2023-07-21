@@ -1,13 +1,28 @@
 import { ReactNode } from 'react';
 import { AiFillHome } from 'react-icons/ai';
+import { BiLogOut } from 'react-icons/bi';
 import { MdOutlineAddBox } from 'react-icons/md';
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
+import UserAuth from '../context/AuthContext';
 
 interface SidebarProps {
 	children: ReactNode;
 }
 
 const Sidebar = ({ children }: SidebarProps) => {
+	const { logout } = UserAuth();
+
+	const handleLogout = async () => {
+		try {
+			await logout();
+			toast.success('Sucessfully logged out');
+		} catch (error) {
+			console.error(error);
+			toast.error(`${error}`);
+		}
+	};
+
 	return (
 		<>
 			<section className="h-screen w-1/5 fixed left-0 z-10 bg-white p-4 flex flex-col gap-4">
@@ -27,7 +42,19 @@ const Sidebar = ({ children }: SidebarProps) => {
 							<MdOutlineAddBox />
 						</p>
 						<li>
-							<button className="text-md">Create</button>
+							<button className="text-md" type="button">
+								Create
+							</button>
+						</li>
+					</div>
+					<div className="flex items-center gap-2 p-2 text-eerieBlack rounded hover:bg-lotion">
+						<p className="text-xl">
+							<BiLogOut />
+						</p>
+						<li>
+							<button className="text-md" type="button" onClick={handleLogout}>
+								Logout
+							</button>
 						</li>
 					</div>
 				</ul>
