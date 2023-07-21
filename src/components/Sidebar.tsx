@@ -1,16 +1,18 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { AiFillHome } from 'react-icons/ai';
 import { BiLogOut } from 'react-icons/bi';
 import { MdOutlineAddBox } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import UserAuth from '../context/AuthContext';
+import CreatePostModal from './CreatePostModal';
 
 interface SidebarProps {
 	children: ReactNode;
 }
 
 const Sidebar = ({ children }: SidebarProps) => {
+	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const { logout } = UserAuth();
 
 	const handleLogout = async () => {
@@ -22,6 +24,14 @@ const Sidebar = ({ children }: SidebarProps) => {
 			toast.error(`${error}`);
 		}
 	};
+
+	function closeModal() {
+		setIsOpen(false);
+	}
+
+	function openModal() {
+		setIsOpen(true);
+	}
 
 	return (
 		<>
@@ -42,7 +52,7 @@ const Sidebar = ({ children }: SidebarProps) => {
 							<MdOutlineAddBox />
 						</p>
 						<li>
-							<button className="text-md" type="button">
+							<button className="text-md" type="button" onClick={openModal}>
 								Create
 							</button>
 						</li>
@@ -59,6 +69,7 @@ const Sidebar = ({ children }: SidebarProps) => {
 					</div>
 				</ul>
 			</section>
+			<CreatePostModal isOpen={isOpen} closeModal={closeModal} />
 			<main>{children}</main>
 		</>
 	);
