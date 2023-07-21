@@ -6,6 +6,7 @@ import { AuthProvider } from './context/AuthContext';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import ProtectedRoutes from './routes/ProtectedRoutes';
 
 function App() {
 	return (
@@ -16,7 +17,14 @@ function App() {
 					<Navbar />
 					<Sidebar />
 					<Routes>
-						<Route path="/" element={<Home />} />
+						<Route
+							path="/"
+							element={
+								<ProtectedRoutes>
+									<Home />
+								</ProtectedRoutes>
+							}
+						/>
 						<Route path="/login" element={<Login />} />
 						<Route path="/signup" element={<Signup />} />
 					</Routes>
