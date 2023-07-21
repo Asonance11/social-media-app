@@ -1,10 +1,11 @@
 import Posts from '../components/Posts';
+import Sidebar from '../components/Sidebar';
 
 const Home = () => {
 	return (
-		<section>
+		<Sidebar>
 			<Posts />
-		</section>
+		</Sidebar>
 	);
 };
 
