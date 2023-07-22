@@ -26,12 +26,13 @@ const CreatePostModal = ({ isOpen, closeModal }: Props) => {
 
 			// add download URL to firestore
 
-			const postRef = await addDoc(collection(db, 'posts'), {
+			const postRef = addDoc(collection(db, 'posts'), {
 				timestamp: serverTimestamp(),
 				caption: caption,
 				username: user?.displayName,
 				imageUrl: downloadURL,
 			});
+			await postRef;
 		} catch (error) {
 			console.error(error);
 			toast.error(`${error}`);
@@ -78,6 +79,7 @@ const CreatePostModal = ({ isOpen, closeModal }: Props) => {
 											className="flex flex-col gap-4 w-full"
 											onSubmit={(e) => {
 												handleUpload(e);
+												closeModal();
 											}}
 										>
 											<div>
@@ -99,7 +101,7 @@ const CreatePostModal = ({ isOpen, closeModal }: Props) => {
 															setImage(e.target.files[0]);
 														}
 													}}
-													value={image}
+													// value={image}
 												/>
 											</div>
 											<input
