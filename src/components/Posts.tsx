@@ -1,4 +1,4 @@
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { db } from '../config/firebase';
@@ -15,19 +15,34 @@ const Posts = () => {
 	const [posts, setPosts] = useState<PostType[]>([]);
 
 	const postCollectionRef = collection(db, 'posts');
+	const postCollectionQuery = query(
+		postCollectionRef,
+		orderBy('timestamp', 'desc')
+	);
 
 	const getPosts = async () => {
 		try {
-			const data = await getDocs(postCollectionRef);
-			const filteredData: PostType[] = data.docs.map(
-				(doc) =>
-					({
-						...doc.data(),
-						id: doc.id,
-					} as PostType)
-			);
-			console.log(filteredData);
-			setPosts(filteredData);
+			const unsub = onSnapshot(postCollectionQuery, (snapshot) => {
+				setPosts(
+					snapshot.docs.map(
+						(doc) =>
+							({
+								...doc.data(),
+								id: doc.id,
+							} as PostType)
+					)
+				);
+			});
+			// const data = await getDocs(postCollectionRef);
+			// const filteredData: PostType[] = data.docs.map(
+			// 	(doc) =>
+			// 		({
+			// 			...doc.data(),
+			// 			id: doc.id,
+			// 		} as PostType)
+			// );
+			// console.log(filteredData);
+			// setPosts(filteredData);
 		} catch (error) {
 			console.error(error);
 			toast.error(`${error}`);
