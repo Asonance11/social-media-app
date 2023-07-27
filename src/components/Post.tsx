@@ -1,4 +1,5 @@
 import { RxAvatar } from 'react-icons/rx';
+import CommentForm from './CommentForm';
 interface PostProps {
 	username: string;
 	caption: string;
@@ -21,6 +22,8 @@ const Post = (props: PostProps) => {
 				<strong>{props.username}:</strong>
 				<caption>{props.caption}</caption>
 			</div>
+
+			<CommentForm />
 		</section>
 	);
 };
