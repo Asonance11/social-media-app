@@ -34,16 +34,6 @@ const Posts = () => {
 					)
 				);
 			});
-			// const data = await getDocs(postCollectionRef);
-			// const filteredData: PostType[] = data.docs.map(
-			// 	(doc) =>
-			// 		({
-			// 			...doc.data(),
-			// 			id: doc.id,
-			// 		} as PostType)
-
-			// console.log(filteredData);
-			// setPosts(filteredData);
 		} catch (error) {
 			console.error(error);
 			toast.error(`${error}`);
@@ -58,6 +48,7 @@ const Posts = () => {
 		<section className="container mx-auto p-4">
 			{posts.map((post) => (
 				<Post
+					key={post.id}
 					username={post.username}
 					caption={post.caption}
 					imageUrl={post.imageUrl}
