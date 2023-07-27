@@ -49,6 +49,7 @@ const Posts = () => {
 			{posts.map((post) => (
 				<Post
 					key={post.id}
+					postId={post.id}
 					username={post.username}
 					caption={post.caption}
 					imageUrl={post.imageUrl}

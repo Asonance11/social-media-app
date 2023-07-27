@@ -1,9 +1,11 @@
 import { RxAvatar } from 'react-icons/rx';
 import CommentForm from './CommentForm';
+import Comments from './Comments';
 interface PostProps {
 	username: string;
 	caption: string;
 	imageUrl: string;
+	postId: string;
 }
 
 const Post = (props: PostProps) => {
@@ -20,10 +22,11 @@ const Post = (props: PostProps) => {
 			</div>
 			<div className="flex items-center gap-2 mt-2 px-2">
 				<strong>{props.username}:</strong>
-				<caption>{props.caption}</caption>
+				<p>{props.caption}</p>
 			</div>
 
-			<CommentForm />
+			<Comments postId={props.postId} />
+			<CommentForm postId={props.postId} />
 		</section>
 	);
 };
