@@ -33,6 +33,8 @@ const CreatePostModal = ({ isOpen, closeModal }: Props) => {
 				imageUrl: downloadURL,
 			});
 			await postRef;
+			setCaption('');
+			setImage(null);
 		} catch (error) {
 			console.error(error);
 			toast.error(`${error}`);
