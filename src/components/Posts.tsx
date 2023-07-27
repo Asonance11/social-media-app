@@ -22,6 +22,7 @@ const Posts = () => {
 
 	const getPosts = async () => {
 		try {
+			// @ts-ignore
 			const unsub = onSnapshot(postCollectionQuery, (snapshot) => {
 				setPosts(
 					snapshot.docs.map(
