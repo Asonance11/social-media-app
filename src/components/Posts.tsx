@@ -41,7 +41,7 @@ const Posts = () => {
 			// 			...doc.data(),
 			// 			id: doc.id,
 			// 		} as PostType)
-			// );
+
 			// console.log(filteredData);
 			// setPosts(filteredData);
 		} catch (error) {
