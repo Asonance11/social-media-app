@@ -76,7 +76,7 @@ const Login = () => {
 							</span>
 							{''}
 							<Link
-								to="/login"
+								to="/signup"
 								className="text-darkBlue opacity-80 hover:underline"
 							>
 								{' '}
