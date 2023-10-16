@@ -28,8 +28,10 @@ const CommentForm = ({ postId }: PropsType) => {
 			await commentRef;
 			setComment('');
 		} catch (error) {
-			console.error(error);
-			toast.error(`${error}`);
+			if (error instanceof Error) {
+				console.error(error);
+				toast.error(`Error creating comments: ${error.message}`);
+			}
 		}
 	};
 

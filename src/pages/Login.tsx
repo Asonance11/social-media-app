@@ -19,8 +19,10 @@ const Login = () => {
 			toast.success('Login successful');
 			navigate('/');
 		} catch (error) {
-			console.error(error);
-			toast.error(`${error}`);
+			if (error instanceof Error) {
+				console.error(error);
+				toast.error(`Error logging in: ${error.message}`);
+			}
 		}
 	};
 

@@ -20,8 +20,10 @@ const Sidebar = ({ children }: SidebarProps) => {
 			await logout();
 			toast.success('Sucessfully logged out');
 		} catch (error) {
-			console.error(error);
-			toast.error(`${error}`);
+			if (error instanceof Error) {
+				console.error(error);
+				toast.error(`Error logging out: ${error.message}`);
+			}
 		}
 	};
 
