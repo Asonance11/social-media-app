@@ -4,7 +4,7 @@ import { BiLogOut } from 'react-icons/bi';
 import { MdOutlineAddBox } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
-import UserAuth from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 import CreatePostModal from './CreatePostModal';
 
 interface SidebarProps {
@@ -13,7 +13,7 @@ interface SidebarProps {
 
 const Sidebar = ({ children }: SidebarProps) => {
 	const [isOpen, setIsOpen] = useState<boolean>(false);
-	const { logout } = UserAuth();
+	const { logout } = useAuth();
 
 	const handleLogout = async () => {
 		try {

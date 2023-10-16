@@ -2,7 +2,7 @@ import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { db } from '../config/firebase';
-import UserAuth from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 
 interface PropsType {
 	postId: string;
@@ -11,7 +11,7 @@ interface PropsType {
 const CommentForm = ({ postId }: PropsType) => {
 	const [commment, setComment] = useState('');
 
-	const { user } = UserAuth();
+	const { user } = useAuth();
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();

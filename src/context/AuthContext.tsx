@@ -1,50 +1,57 @@
 import {
 	Auth,
-	User,
-	UserCredential,
 	createUserWithEmailAndPassword,
 	onAuthStateChanged,
 	signInWithEmailAndPassword,
 	signOut,
+	User,
+	UserCredential,
 } from 'firebase/auth';
 import {
-	ReactNode,
 	createContext,
+	ReactNode,
 	useContext,
 	useEffect,
 	useState,
 } from 'react';
 import { auth } from '../config/firebase';
 
-interface Props {
+interface AuthProviderProps {
 	children?: ReactNode;
 }
 
-export interface AuthContextModel {
+interface AuthContextValue {
 	auth: Auth;
 	user: User | null;
-	signIn: (email: string, password: string) => Promise<UserCredential>;
 	signUp: (email: string, password: string) => Promise<UserCredential>;
+	signIn: (email: string, password: string) => Promise<UserCredential>;
 	logout: () => Promise<void>;
 }
 
-export const AuthContext = createContext<AuthContextModel>(
-	{} as AuthContextModel
+export const AuthContext = createContext<AuthContextValue | undefined>(
+	undefined
 );
-export const AuthProvider = ({ children }: Props) => {
+
+export function AuthProvider({ children }: AuthProviderProps) {
 	const [user, setUser] = useState<User | null>(null);
 
-	function signUp(email: string, password: string): Promise<UserCredential> {
+	const signUp = async (
+		email: string,
+		password: string
+	): Promise<UserCredential> => {
 		return createUserWithEmailAndPassword(auth, email, password);
-	}
+	};
 
-	function signIn(email: string, password: string): Promise<UserCredential> {
+	const signIn = async (
+		email: string,
+		password: string
+	): Promise<UserCredential> => {
 		return signInWithEmailAndPassword(auth, email, password);
-	}
+	};
 
-	function logout(): Promise<void> {
+	const logout = async (): Promise<void> => {
 		return signOut(auth);
-	}
+	};
 
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -56,17 +63,23 @@ export const AuthProvider = ({ children }: Props) => {
 		};
 	}, []);
 
-	const value = {
+	const contextValue: AuthContextValue = {
+		auth,
+		user,
 		signUp,
 		signIn,
 		logout,
-		user,
-		auth,
 	};
 
-	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
+	return (
+		<AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+	);
+}
 
-export default function UserAuth(): AuthContextModel {
-	return useContext(AuthContext);
+export function useAuth(): AuthContextValue {
+	const context = useContext(AuthContext);
+	if (context === undefined) {
+		throw new Error('useAuth must be used within an AuthProvider');
+	}
+	return context;
 }

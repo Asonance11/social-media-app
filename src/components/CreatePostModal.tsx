@@ -4,7 +4,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { Fragment, useState } from 'react';
 import { toast } from 'sonner';
 import { db, storage } from '../config/firebase';
-import UserAuth from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 interface Props {
 	isOpen: boolean;
 	closeModal: () => void;
@@ -14,7 +14,7 @@ const CreatePostModal = ({ isOpen, closeModal }: Props) => {
 	const [caption, setCaption] = useState('');
 	const [image, setImage] = useState<any>(null);
 
-	const { user } = UserAuth();
+	const { user } = useAuth();
 
 	const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();

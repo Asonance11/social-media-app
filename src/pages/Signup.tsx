@@ -2,7 +2,7 @@ import { updateProfile } from 'firebase/auth';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import UserAuth from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 
 const Signup = () => {
 	const [email, setEmail] = useState('');
@@ -11,7 +11,7 @@ const Signup = () => {
 
 	const navigate = useNavigate();
 
-	const { signUp } = UserAuth();
+	const { signUp } = useAuth();
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();

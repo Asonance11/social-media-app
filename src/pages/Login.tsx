@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import UserAuth from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
 	const [email, setEmail] = useState('');
@@ -9,7 +9,7 @@ const Login = () => {
 
 	const navigate = useNavigate();
 
-	const { signIn } = UserAuth();
+	const { signIn } = useAuth();
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
