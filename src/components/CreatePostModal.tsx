@@ -12,13 +12,18 @@ interface Props {
 
 const CreatePostModal = ({ isOpen, closeModal }: Props) => {
 	const [caption, setCaption] = useState('');
-	const [image, setImage] = useState<any>(null);
+	const [image, setImage] = useState<File | null>(null);
 
 	const { user } = useAuth();
 
 	const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		try {
+			if (!image) {
+				toast.error('Please select an image to upload.');
+				return;
+			}
+
 			const storageRef = ref(storage, `images/${image?.name}`);
 			const uploadTask = uploadBytesResumable(storageRef, image);
 			await uploadTask;
@@ -35,103 +40,84 @@ const CreatePostModal = ({ isOpen, closeModal }: Props) => {
 			await postRef;
 			setCaption('');
 			setImage(null);
+			closeModal();
 		} catch (error) {
-			console.error(error);
-			toast.error(`${error}`);
+			if (error instanceof Error) {
+				console.error(error);
+				toast.error(`Error creating a post: ${error.message}`);
+			}
 		}
 	};
 
 	return (
 		<>
-			<Transition appear show={isOpen} as={Fragment}>
-				<Dialog as="div" className="relative z-10" onClose={closeModal}>
-					<Transition.Child
-						as={Fragment}
-						enter="ease-out duration-300"
-						enterFrom="opacity-0"
-						enterTo="opacity-100"
-						leave="ease-in duration-200"
-						leaveFrom="opacity-100"
-						leaveTo="opacity-0"
-					>
-						<div className="fixed inset-0 bg-black bg-opacity-25" />
-					</Transition.Child>
+			<Transition show={isOpen} as={Fragment}>
+				<Dialog as="div" className="fixed inset-0 z-10" onClose={closeModal}>
+					<div className="min-h-screen flex items-center justify-center">
+						<Transition.Child
+							as={Fragment}
+							enter="ease-out duration-300"
+							enterFrom="opacity-0"
+							enterTo="opacity-100"
+							leave="ease-in duration-200"
+							leaveFrom="opacity-100"
+							leaveTo="opacity-0"
+						>
+							<Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-25" />
+						</Transition.Child>
 
-					<div className="fixed inset-0 overflow-y-auto">
-						<div className="flex min-h-full items-center justify-center p-4 text-center">
-							<Transition.Child
-								as={Fragment}
-								enter="ease-out duration-300"
-								enterFrom="opacity-0 scale-95"
-								enterTo="opacity-100 scale-100"
-								leave="ease-in duration-200"
-								leaveFrom="opacity-100 scale-100"
-								leaveTo="opacity-0 scale-95"
-							>
-								<Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-									<Dialog.Title
-										as="h3"
-										className="text-lg font-medium text-center leading-6 text-eerieBlack"
+						<Transition.Child
+							as={Fragment}
+							enter="ease-out duration-300"
+							enterFrom="opacity-0 scale-95"
+							enterTo="opacity-100 scale-100"
+							leave="ease-in duration-200"
+							leaveFrom="opacity-100 scale-100"
+							leaveTo="opacity-0 scale-95"
+						>
+							<div className="bg-white rounded-2xl max-w-md p-6 text-left">
+								<Dialog.Title className="text-lg font-medium text-center text-eerieBlack">
+									Create A Post
+								</Dialog.Title>
+								<form onSubmit={handleUpload} className="mt-4 space-y-4">
+									<label
+										htmlFor="post-image"
+										className="block text-md text-center text-eerieBlack font-medium"
 									>
-										Create A Post
-									</Dialog.Title>
-									<div className="mt-2">
-										<form
-											action=""
-											className="flex flex-col gap-4 w-full"
-											onSubmit={(e) => {
-												handleUpload(e);
-												closeModal();
-											}}
-										>
-											<div>
-												<label
-													className="mb-2 text-md text-center text-eerieBlack font-medium"
-													htmlFor="post-image"
-												>
-													Upload Image
-												</label>
-												<input
-													className="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] focus:outline-none "
-													type="file"
-													name="post_image"
-													id="post-image"
-													accept="image/*"
-													required
-													onChange={(e) => {
-														if (e.target.files) {
-															setImage(e.target.files[0]);
-														}
-													}}
-													// value={image}
-												/>
-											</div>
-											<input
-												type="text"
-												name="post_caption"
-												id="post-caption"
-												required
-												placeholder="Caption"
-												className="w-full rounded border border-solid border-neutral-300 px-3 py-[0.32rem] placeholder:text-neutral-700 focus:outline-none"
-												onChange={(e) => {
-													setCaption(e.target.value);
-												}}
-												value={caption}
-											/>
-
-											<div>
-												<button
-													type="submit"
-													className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-												>
-													Create Post
-												</button>
-											</div>
-										</form>
-									</div>
-								</Dialog.Panel>
-							</Transition.Child>
-						</div>
+										Upload Image
+									</label>
+									<input
+										type="file"
+										id="post-image"
+										accept="image/*"
+										required
+										onChange={(e) => {
+											if (e.target.files) {
+												setImage(e.target.files[0]);
+											}
+										}}
+									/>
+									<input
+										type="text"
+										id="post-caption"
+										name="post_caption"
+										placeholder="Caption"
+										required
+										className="w-full rounded border border-solid border-neutral-300 px-3 py-[0.32rem] placeholder:text-neutral-700 focus:outline-none"
+										onChange={(e) => {
+											setCaption(e.target.value);
+										}}
+										value={caption}
+									/>
+									<button
+										type="submit"
+										className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+									>
+										Create Post
+									</button>
+								</form>
+							</div>
+						</Transition.Child>
 					</div>
 				</Dialog>
 			</Transition>

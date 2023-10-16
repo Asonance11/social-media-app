@@ -20,29 +20,28 @@ const Posts = () => {
 		orderBy('timestamp', 'desc')
 	);
 
-	const getPosts = async () => {
-		try {
-			// @ts-ignore
-			const unsub = onSnapshot(postCollectionQuery, (snapshot) => {
-				setPosts(
-					snapshot.docs.map(
-						(doc) =>
-							({
-								...doc.data(),
-								id: doc.id,
-							} as PostType)
-					)
-				);
-			});
-		} catch (error) {
-			console.error(error);
-			toast.error(`${error}`);
-		}
-	};
-
 	useEffect(() => {
-		getPosts();
+		const unsub = onSnapshot(postCollectionQuery, (snapshot) => {
+			const newPosts: PostType[] = snapshot.docs.map(
+				(doc) =>
+					({
+						...doc.data(),
+						id: doc.id,
+					} as PostType)
+			);
+
+			setPosts(newPosts);
+		});
+
+		return () => {
+			unsub();
+		};
 	}, []);
+
+	const handleFetchError = (error: Error) => {
+		console.error(error);
+		toast.error(error.message || 'An error occurred while fetching posts.');
+	};
 
 	return (
 		<section className="container mx-auto p-4">
