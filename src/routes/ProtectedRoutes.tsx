@@ -8,11 +8,7 @@ interface Props {
 function ProtectedRoutes({ children }: Props): JSX.Element {
 	const { user } = useAuth();
 
-	if (!user) {
-		return <Navigate to="/login" />;
-	}
-
-	return children;
+	return !user ? <Navigate to="/login" /> : children;
 }
 
 export default ProtectedRoutes;
